@@ -1,0 +1,14 @@
+{
+    "name": "toxicsky/decorator",
+    "description": "A test to see if Python-styled decorators can be implemented in PHP.",
+    "authors": [
+        {
+            "name": "Richard Atterfalk",
+            "email": "richard@atterfalk.se"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Decorator\\": "src/Decorator"}
+    },
+    "require": {}
+}
