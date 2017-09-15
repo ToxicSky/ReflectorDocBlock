@@ -10,5 +10,8 @@
     "autoload": {
         "psr-4": {"Decorator\\": "src/Decorator"}
     },
-    "require": {}
+    "require": {},
+    "require-dev": {
+        "phpunit/phpunit": "^6.2"
+    }
 }

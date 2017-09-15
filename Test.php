@@ -11,7 +11,7 @@ class Test
      */
     protected function methodGetTest()
     {
-        return 'This should be visible if GET.';
+        return 'GET';
     }
 
     /**
