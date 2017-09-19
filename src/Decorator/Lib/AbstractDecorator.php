@@ -1,6 +1,6 @@
 <?php
 
-namespace Decorator\Libraries;
+namespace Decorator\Lib;
 
 abstract class ABstractDecorator
 {

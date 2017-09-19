@@ -1,8 +1,9 @@
 <?php
 
-namespace Decorator\Libraries;
+namespace Decorator\Lib\RequestMethods;
 
-use Decorator\Attributes;
+use Decorator\Lib\AbstractDecorator;
+use Decorator\Lib\DecoratorInterface;
 use InvalidArgumentException;
 
 class Method extends AbstractDecorator implements DecoratorInterface
@@ -15,7 +16,7 @@ class Method extends AbstractDecorator implements DecoratorInterface
     /**
      * @var mixed
      */
-    private $validMethods;
+    private $_validMethods;
 
     /**
      * @var mixed
@@ -28,17 +29,11 @@ class Method extends AbstractDecorator implements DecoratorInterface
     private $matches;
 
     /**
-     * @var mixed
-     */
-    private $attributes;
-
-    /**
      * @param $matches
      */
-    public function __construct($matches)
+    public function __construct(array $matches)
     {
-        $this->attributes = new Attributes;
-        $this->matches    = $matches;
+        $this->matches = $matches;
     }
 
     /**
@@ -49,13 +44,10 @@ class Method extends AbstractDecorator implements DecoratorInterface
         $this->method = $method;
     }
 
-    /**
-     * @param $methods
-     */
-    public function setValidMethods($methods)
+    public function setValidMethods()
     {
-        if (isset($this->matches[3])) {
-            $this->validMethods = $this->parseAttributes($this->matches[3]);
+        if (!empty($this->matches[3])) {
+            $this->_validMethods = $this->parseAttributes($this->matches[3]);
         }
     }
 
@@ -73,13 +65,13 @@ class Method extends AbstractDecorator implements DecoratorInterface
      */
     private function validate()
     {
-        if (in_array($this->method, $this->validMethods)) {
+        if (in_array($this->method, $this->_validMethods)) {
             $this->_isValid = true;
         } else {
             $this->_isValid = false;
             $msg            = 'Expected (%s), but got %s instead.';
             throw new InvalidArgumentException(
-                sprintf($msg, implode(',', $this->validMethods), $this->method)
+                sprintf($msg, implode(',', $this->_validMethods), $this->method)
             );
         }
     }

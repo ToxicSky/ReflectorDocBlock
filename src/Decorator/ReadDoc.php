@@ -1,8 +1,8 @@
 <?php
 namespace Decorator;
 
-// use Attributes;
-use Decorator\Libraries\Method;
+use Decorator\Lib\Authentication\Authenticate;
+use Decorator\Lib\RequestMethods\Method;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -52,26 +52,21 @@ class ReadDoc
         $docBlock = $reflector->getMethod($method)->getDocComment();
 
         preg_match($this->pattern, $docBlock, $matches);
-        // var_dump($matches);
 
+        $valid = false;
         if ($matches[self::DECORATOR] === 'method') {
-            $method       = new Method($matches);
-            $validMethods = [];
-            if (!empty($matches[3])) {
-                $validMethods = explode(',', $matches[3]);
+            $method = new Method($matches);
+            $method->setMethod($this->inputMethod);
+            $method->setValidMethods();
 
-                foreach ($validMethods as $key => &$value) {
-                    $value = trim($value);
-                }
-
-                $method->setMethod($this->inputMethod);
-                $method->setValidMethods($validMethods);
-            }
-            if ($method->isValid()) {
-                return $refMethod->invoke($this->class);
-            }
+            $valid = $method->isValid();
         } else if ($matches[self::DECORATOR] === 'auth') {
-            // Do Auth-stuff
+            $auth  = new Authenticate($matches);
+            $valid = $auth->isValid();
+        }
+
+        if ($valid) {
+            return $refMethod->invoke($this->class);
         }
 
     }

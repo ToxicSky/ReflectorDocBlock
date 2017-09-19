@@ -27,6 +27,6 @@ class Test
      */
     protected function methodAuthTest()
     {
-        return 'Auth required!';
+        return true;
     }
 }

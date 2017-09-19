@@ -1,6 +1,6 @@
 <?php
 
-namespace Decorator\Libraries;
+namespace Decorator\Lib;
 
 interface DecoratorInterface
 {
@@ -8,7 +8,7 @@ interface DecoratorInterface
      * @var array $matches Must contain matches from ReadDoc.
      * @return void
      */
-    public function __construct($matches);
+    public function __construct(array $matches);
 
     /**
      * @return boolean
