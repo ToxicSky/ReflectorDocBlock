@@ -12,7 +12,7 @@ class MethodTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \Decorator\Exceptions\InvalidMethodException
      */
     public function testPost()
     {

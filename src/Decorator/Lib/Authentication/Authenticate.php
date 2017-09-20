@@ -1,10 +1,9 @@
 <?php
 namespace Decorator\Lib\Authentication;
 
+use Decorator\Exceptions\AuthenticationException;
 use Decorator\Lib\DecoratorInterface;
 use Decorator\Lib\ParseConfig;
-use DomainException;
-use InvalidArgumentException;
 
 class Authenticate implements DecoratorInterface
 {
@@ -44,8 +43,7 @@ class Authenticate implements DecoratorInterface
      * Validates a session to see that all variables are there.
      * Will nto make any calls to db at the current moment.
      *
-     * @throws InvalidArgumentException
-     * @throws DomainException
+     * @throws AuthenticationException
      *
      * @return boolean
      */
@@ -61,7 +59,7 @@ class Authenticate implements DecoratorInterface
             }
 
             if (!isset($_SESSION[$config])) {
-                throw new DomainException('Change this...');
+                throw new AuthenticationException();
             }
         }
 
@@ -70,14 +68,10 @@ class Authenticate implements DecoratorInterface
                 if (strpos($value, 're:') !== false) {
                     $value = explode(':', $value)[1];
                     if (!preg_match($value, $_SESSION[$key])) {
-                        throw new InvalidArgumentException(
-                            sprintf('Invalid value provided to key "%s"', $key)
-                        );
+                        throw new AuthenticationException();
                     }
                 } else if ($_SESSION[$key] != $value) {
-                    throw new InvalidArgumentException(
-                        sprintf('Invalid value provided to key "%s"', $key)
-                    );
+                    throw new AuthenticationException();
                 }
             }
         }

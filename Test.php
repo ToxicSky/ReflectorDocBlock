@@ -19,7 +19,7 @@ class Test
      */
     protected function methodPostTest()
     {
-        return 'This should be visible if POST.';
+        return 'POST';
     }
 
     /**

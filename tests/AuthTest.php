@@ -15,7 +15,7 @@ class AuthTest extends TestCase
     }
 
     /**
-     * @expectedException InvalidArgumentException
+     * @expectedException \Decorator\Exceptions\AuthenticationException
      */
     public function testAuthFail()
     {

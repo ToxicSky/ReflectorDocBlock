@@ -2,9 +2,9 @@
 
 namespace Decorator\Lib\RequestMethods;
 
+use Decorator\Exceptions\InvalidMethodException;
 use Decorator\Lib\AbstractDecorator;
 use Decorator\Lib\DecoratorInterface;
-use InvalidArgumentException;
 
 class Method extends AbstractDecorator implements DecoratorInterface
 {
@@ -70,8 +70,8 @@ class Method extends AbstractDecorator implements DecoratorInterface
         } else {
             $this->_isValid = false;
             $msg            = 'Expected (%s), but got %s instead.';
-            throw new InvalidArgumentException(
-                sprintf($msg, implode(',', $this->_validMethods), $this->method)
+            throw new InvalidMethodException(
+                [$this->_validMethods, $this->method]
             );
         }
     }
