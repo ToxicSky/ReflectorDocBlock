@@ -3,7 +3,7 @@ namespace Decorator\Lib\Authentication;
 
 use Decorator\Exceptions\AuthenticationException;
 use Decorator\Lib\DecoratorInterface;
-use Decorator\Lib\ParseConfig;
+use Decorator\Lib\Config;
 
 class Authenticate implements DecoratorInterface
 {
@@ -33,7 +33,7 @@ class Authenticate implements DecoratorInterface
     public function __construct(array $matches)
     {
         $this->_matches = $matches;
-        $this->_config  = ParseConfig::get('authentication');
+        $this->_config  = Config::get('authentication');
         $this->setDriver($this->_config['driver']);
     }
 
@@ -103,7 +103,7 @@ class Authenticate implements DecoratorInterface
         if ($driver === 'zend') {
             // $this->_driver = Zend\Session\Container::class;
             $this->_driver = null;
-        } else if ($driver === 'laravel') {
+        } else if ($driver === 'ldaravel') {
             $this->_driver = Illuminate\Support\Facades\Auth::class;
         return Illuminate\Support\Facades\Auth::check();
             $this->_dirver = null;
