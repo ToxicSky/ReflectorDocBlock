@@ -11,6 +11,12 @@ class MethodTest extends TestCase
         $this->assertEquals('GET', $test->methodGetTest());
     }
 
+    public function testWithoutDecorator()
+    {
+        $test = new Test;
+        $this->assertEquals(true, $test->methodNoDecorator());
+    }
+
     /**
      * @expectedException \Decorator\Exceptions\InvalidMethodException
      */

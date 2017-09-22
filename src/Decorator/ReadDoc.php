@@ -6,6 +6,10 @@ use Decorator\Lib\RequestMethods\Method;
 use ReflectionClass;
 use ReflectionMethod;
 
+/**
+ * Parses the docblock above the called class and calls classes
+ * related to the decoration, if any.
+ */
 class ReadDoc
 {
     const DECORATOR = 'decorator';
@@ -37,7 +41,10 @@ class ReadDoc
     }
 
     /**
+     * @throws \Exception
+     *
      * @param $input
+     * @return \ReflectionMethod|void
      */
     public function parse($method)
     {
@@ -52,6 +59,10 @@ class ReadDoc
         $docBlock = $reflector->getMethod($method)->getDocComment();
 
         preg_match($this->pattern, $docBlock, $matches);
+
+        if(!isset($matches[self::DECORATOR])) {
+            return $refMethod->invoke($this->class);
+        }
 
         $valid = false;
         if ($matches[self::DECORATOR] === 'method') {
@@ -73,7 +84,7 @@ class ReadDoc
 
     /**
      * @param $attr
-     * @return mixed
+     * @return array
      */
     private function parseAttributes($attr)
     {

@@ -29,4 +29,9 @@ class Test
     {
         return true;
     }
+
+    protected function methodNoDecorator()
+    {
+        return true;
+    }
 }
