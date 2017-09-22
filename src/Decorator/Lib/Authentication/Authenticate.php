@@ -57,12 +57,12 @@ class Authenticate implements DecoratorInterface
     {
         $values = [];
         $session = null;
+        $this->setDriver($this->_config['driver']);
+
         if ($this->_driver === null) {
             $session = $_SESSION;
         } else if ($this->_driver === Illuminate\Support\Facades\Auth::class) {
             return Illuminate\Support\Facades\Auth::check();
-        } else if ($this->_driver === Zend\Session\Container::class) {
-            $session = new Zend\Session\Container('zend_auth');
         }
 
         foreach ($this->_config as $key => $config) {
@@ -100,12 +100,10 @@ class Authenticate implements DecoratorInterface
      */
     private function setDriver(string $driver)
     {
-        if ($driver === 'zend') {
-            // $this->_driver = Zend\Session\Container::class;
-            $this->_driver = null;
-        } else if ($driver === 'ldaravel') {
-            $this->_driver = Illuminate\Support\Facades\Auth::class;
-        return Illuminate\Support\Facades\Auth::check();
+        $driver = strtolower($driver);
+        if ($driver === 'laravel') {
+            $this->_driver = \Illuminate\Support\Facades\Auth::class;
+        } else {
             $this->_dirver = null;
         }
     }

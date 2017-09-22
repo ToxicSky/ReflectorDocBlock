@@ -11,13 +11,14 @@ class ConfigTest extends TestCase
         \Decorator\Lib\Config::set('./falseInit.ini');
     }
 
-    public function setConfig()
+    public function testSetConfig()
     {
-        \Decorator\Lib\Config::set('./decorator.ini');
+        $result = \Decorator\Lib\Config::set('./decorator.ini');
+        $this->assertInternalType('null', $result);
     }
 
     /**
-     * @depends setConfig
+     * @depends testSetConfig
      */
     public function testGetConfig()
     {
