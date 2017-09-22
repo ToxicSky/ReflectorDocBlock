@@ -47,7 +47,10 @@ final class Config
     {
         if (!file_exists(self::$_configFile)) {
             throw new DomainException(
-                'Could not find decorator.ini in root-directory'
+                sprintf(
+                    'Could not find %s in root-directory',
+                    self::$_configFile
+                )
             );
         }
     }
