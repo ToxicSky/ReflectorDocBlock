@@ -5,6 +5,8 @@ use Decorator\Lib\Authentication\Authenticate;
 use Decorator\Lib\RequestMethods\Method;
 use ReflectionClass;
 use ReflectionMethod;
+use Exception;
+use BadMethodCallException;
 
 /**
  * Parses the docblock above the called class and calls classes
@@ -42,6 +44,7 @@ class ReadDoc
 
     /**
      * @throws \Exception
+     * @throws \BadMethodCallException
      *
      * @param $input
      * @return \ReflectionMethod|void
@@ -55,6 +58,12 @@ class ReadDoc
 
         $reflector = new ReflectionClass($this->class);
         $refMethod = new ReflectionMethod($this->class, $method);
+        if(!$refMethod->isProtected()) {
+            throw new BadMethodCallException(sprintf(
+                '%s must be protected to be called.',
+                $method
+            ));
+        }
         $refMethod->setAccessible(true);
         $docBlock = $reflector->getMethod($method)->getDocComment();
 
