@@ -23,12 +23,18 @@ class Authenticate implements DecoratorInterface
     private $_user;
 
     /**
+     * @var string
+     */
+    private $_driver;
+
+    /**
      * @param array $matches
      */
     public function __construct(array $matches)
     {
         $this->_matches = $matches;
         $this->_config  = ParseConfig::get('authentication');
+        $this->setDriver($this->_config['driver']);
     }
 
     /**
@@ -50,7 +56,17 @@ class Authenticate implements DecoratorInterface
     private function validateSession()
     {
         $values = [];
+        $session = null;
+        if ($this->_driver === null) {
+            $session = $_SESSION;
+        } else if ($this->_driver === Illuminate\Support\Facades\Auth::class) {
+            return Illuminate\Support\Facades\Auth::check();
+        } else if ($this->_driver === Zend\Session\Container::class) {
+            $session = new Zend\Session\Container('zend_auth');
+        }
+
         foreach ($this->_config as $key => $config) {
+            if ($key === 'driver') {continue;}
             $pos = strpos($key, '.');
             if ($pos !== false) {
                 $configKey                          = substr($key, 0, $pos);
@@ -58,23 +74,39 @@ class Authenticate implements DecoratorInterface
                 continue;
             }
 
-            if (!isset($_SESSION[$config])) {
+            if (!isset($session[$config])) {
                 throw new AuthenticationException();
             }
         }
 
         foreach ($values as $key => $value) {
-            if (isset($_SESSION[$key])) {
+            if (isset($session[$key])) {
                 if (strpos($value, 're:') !== false) {
                     $value = explode(':', $value)[1];
-                    if (!preg_match($value, $_SESSION[$key])) {
+                    if (!preg_match($value, $session[$key])) {
                         throw new AuthenticationException();
                     }
-                } else if ($_SESSION[$key] != $value) {
+                } else if ($session[$key] != $value) {
                     throw new AuthenticationException();
                 }
             }
         }
         return true;
+    }
+
+    /**
+     * @param string $driver
+     * @return void
+     */
+    private function setDriver(string $driver)
+    {
+        if ($driver === 'zend') {
+            // $this->_driver = Zend\Session\Container::class;
+            $this->_driver = null;
+        } else if ($driver === 'laravel') {
+            $this->_driver = Illuminate\Support\Facades\Auth::class;
+        return Illuminate\Support\Facades\Auth::check();
+            $this->_dirver = null;
+        }
     }
 }
