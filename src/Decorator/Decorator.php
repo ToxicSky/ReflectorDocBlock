@@ -2,6 +2,9 @@
 
 namespace Decorator;
 
+use ReflectionClass;
+use ReflectionMethod;
+
 trait Decorator
 {
     /**

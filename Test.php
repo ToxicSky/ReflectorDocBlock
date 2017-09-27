@@ -30,8 +30,12 @@ class Test
         return true;
     }
 
-    protected function methodNoDecorator()
+    /**
+     * @method(post)
+     */
+    public function methodNoDecorator()
     {
+        echo 'Hello, World!' . PHP_EOL;
         return true;
     }
 }
